@@ -1,46 +1,78 @@
 # 📄 AI Powered Resume Screener
 
-An AI-powered Resume Screening System built using **Python**, **Streamlit**, **Machine Learning**, and **MySQL**. The application automatically parses resumes, extracts candidate skills, calculates an ATS (Applicant Tracking System) compatibility score against a Job Description, stores candidate information in a database, and ranks applicants based on their scores.
+An **AI-powered Resume Screening System** built using **Python, Streamlit, Machine Learning, and MySQL** that automates the recruitment process by analyzing resumes against a given Job Description (JD). The application extracts resume content, identifies technical skills, calculates an ATS (Applicant Tracking System) compatibility score using Machine Learning, stores candidate details in a MySQL database, and ranks applicants based on their suitability.
 
 ---
 
 ## 🚀 Features
 
-* 📂 Upload multiple PDF resumes
-* 📝 Enter a Job Description
-* 🤖 Automatic resume text extraction
-* 🎯 AI-based ATS score calculation using TF-IDF and Cosine Similarity
-* 🛠 Skill extraction from resumes
-* 💾 Store candidate information in MySQL database
-* 🏆 Rank candidates using Heap-based Priority Queue
-* 📊 Interactive Streamlit web interface
+* 📂 Upload one or multiple PDF resumes
+* 📝 Enter a Job Description for candidate evaluation
+* 🤖 Automatic resume text extraction using PyPDF2
+* 🎯 AI-powered ATS score calculation using TF-IDF & Cosine Similarity
+* 🛠 Automatic skill extraction from resumes
+* 💾 Store candidate information securely in MySQL
+* 🏆 Candidate ranking using Heap-based Priority Queue
+* 📊 Interactive and user-friendly Streamlit dashboard
+* ⚡ Fast processing of multiple resumes
+
+---
+
+# 📸 Application Workflow
+
+```
+Job Description
+        │
+        ▼
+ Upload PDF Resume(s)
+        │
+        ▼
+ Resume Text Extraction
+        │
+        ▼
+ Skill Extraction
+        │
+        ▼
+ ATS Score Calculation
+        │
+        ▼
+ Store Data in MySQL
+        │
+        ▼
+ Heap Ranking Algorithm
+        │
+        ▼
+ Display Top Candidates
+```
 
 ---
 
 ## 🛠 Tech Stack
 
-* Python
-* Streamlit
-* Scikit-learn
-* Pandas
-* PyPDF2
-* MySQL
-* Python Dotenv
+| Technology    | Purpose                    |
+| ------------- | -------------------------- |
+| Python        | Backend Logic              |
+| Streamlit     | Web Application            |
+| Scikit-learn  | TF-IDF & Cosine Similarity |
+| Pandas        | Data Processing            |
+| PyPDF2        | PDF Parsing                |
+| MySQL         | Database                   |
+| Python Dotenv | Environment Variables      |
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 AI-Powered-Resume-Screener/
 │
 ├── app.py                 # Main Streamlit Application
 ├── parser.py              # Resume PDF Parser
-├── skill_extractor.py     # Extract Skills from Resume
+├── skill_extractor.py     # Skill Extraction Module
 ├── ats_scorer.py          # ATS Score Calculator
 ├── candidate.py           # Candidate Class
 ├── db.py                  # Database Operations
-├── heap_ranking.py        # Candidate Ranking Logic
+├── heap_ranking.py        # Heap Priority Queue Ranking
 ├── skills.csv             # Skills Dataset
 ├── requirements.txt
 ├── .env
@@ -49,9 +81,9 @@ AI-Powered-Resume-Screener/
 
 ---
 
-## ⚙️ Installation
+# ⚙️ Installation
 
-### Clone Repository
+## 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/AI-Powered-Resume-Screener.git
@@ -59,9 +91,11 @@ git clone https://github.com/yourusername/AI-Powered-Resume-Screener.git
 cd AI-Powered-Resume-Screener
 ```
 
-### Create Virtual Environment
+---
 
-**Windows**
+## 2️⃣ Create Virtual Environment
+
+### Windows
 
 ```bash
 python -m venv venv
@@ -69,7 +103,17 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### Install Dependencies
+### Linux / macOS
+
+```bash
+python3 -m venv venv
+
+source venv/bin/activate
+```
+
+---
+
+## 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -77,43 +121,46 @@ pip install -r requirements.txt
 
 ---
 
-## 🗄 Configure Database
+# 🗄 Configure MySQL Database
 
-Create a MySQL database and update your `.env` file.
+Create a MySQL database and update your **.env** file.
 
-```
+```env
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=resume_db
 ```
 
-Create the following tables:
+---
 
-### Candidates Table
+## Create Database Tables
+
+### Candidates
 
 ```sql
 CREATE TABLE candidates(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(150),
     score FLOAT
 );
 ```
 
-### Candidate Skills Table
+### Candidate Skills
 
 ```sql
 CREATE TABLE candidate_skills(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     candidate_id INT,
-    skill_name VARCHAR(100)
+    skill_name VARCHAR(100),
+    FOREIGN KEY(candidate_id) REFERENCES candidates(id)
 );
 ```
 
 ---
 
-## ▶️ Run the Application
+# ▶️ Run the Application
 
 ```bash
 streamlit run app.py
@@ -121,70 +168,75 @@ streamlit run app.py
 
 ---
 
-## 📌 Workflow
+# 📊 ATS Scoring Method
 
-1. Enter the Job Description.
-2. Upload one or more PDF resumes.
-3. Extract resume text.
-4. Identify candidate skills.
-5. Calculate ATS compatibility score.
-6. Store candidate data in MySQL.
-7. Rank candidates based on their scores.
-8. Display the Top Candidates.
+The Resume ATS Score is calculated using:
 
----
-
-## 📊 ATS Scoring Method
-
-The project uses:
-
-* TF-IDF Vectorization
+* TF-IDF (Term Frequency-Inverse Document Frequency)
 * Cosine Similarity
 
-to compare the Job Description with the Resume text and generate an ATS compatibility score between **0–100%**.
+The similarity between the Job Description and Resume is converted into an ATS compatibility score ranging from **0–100%**.
 
 ---
 
-## 🎯 Future Enhancements
+# 🏆 Candidate Ranking
 
-* Resume recommendation system
-* Email notification to shortlisted candidates
-* Semantic similarity using BERT or Sentence Transformers
-* Experience extraction
-* Education extraction
-* Resume keyword highlighting
-* Recruiter Dashboard
-* Authentication System
-* Interview Scheduling
+Candidates are ranked using a **Max Heap (Priority Queue)** based on their ATS scores.
+
+Example:
+
+| Candidate   | ATS Score |
+| ----------- | --------: |
+| Candidate A |       91% |
+| Candidate B |       87% |
+| Candidate C |       82% |
 
 ---
 
-## 📷 Application Preview
+# 📌 Future Enhancements
+
+* 🤖 BERT/Sentence Transformer based semantic matching
+* 📧 Automatic email notification to shortlisted candidates
+* 👨‍💼 Recruiter Dashboard
+* 📅 Interview Scheduling
+* 🎓 Education Extraction
+* 💼 Experience Extraction
+* 📄 Resume Keyword Highlighting
+* 🔐 User Authentication
+* 📈 Resume Analytics Dashboard
+
+---
+
+# 📷 Application Preview
 
 ```
+-------------------------------------------------
+
 Enter Job Description
 
-Upload Resumes (PDF)
+Upload Resume(s)
 
-Analyze
+Click Analyze
 
----------------------------------
+-------------------------------------------------
+
 Candidate A
-Score : 91%
+ATS Score : 91%
 
 Candidate B
-Score : 87%
+ATS Score : 87%
 
 Candidate C
-Score : 82%
----------------------------------
+ATS Score : 82%
+
+-------------------------------------------------
 ```
 
 ---
 
-## 📄 Requirements
+# 📦 Requirements
 
-```
+```text
 streamlit
 pandas
 scikit-learn
@@ -193,16 +245,36 @@ PyPDF2
 python-dotenv
 ```
 
----
+Install all dependencies using:
 
-## 👨‍💻 Author
-
-**Sharvatosh Pandey**
-
-B.Tech CSE | AI & Machine Learning Enthusiast
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## 📜 License
+# 🤝 Contributing
 
-This project is licensed under the MIT License.
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**RISHABH SRIVASTAVA**
+
+**B.Tech CSE | AI & Machine Learning Enthusiast**
+
+⭐ If you found this project helpful, don't forget to **Star** the repository.
